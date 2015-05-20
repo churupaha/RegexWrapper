@@ -70,6 +70,7 @@
     <Build Include="SQL\Regex_Replace.sql" />
     <Build Include="SQL\Regex_Split.sql" />
     <Build Include="SQL\SchemaExt.sql" />
+    <Build Include="SQL\Regex_Match.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data" />

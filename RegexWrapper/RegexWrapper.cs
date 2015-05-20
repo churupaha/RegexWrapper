@@ -53,7 +53,7 @@ public partial class UserDefinedFunctions
         IsDeterministic = true,
         IsPrecise = true, 
         FillRowMethodName = "__Regex_MatchesFill",
-        TableDefinition = "[match] int, [group] int, [capture] int, [position] int, [length] int, [value] nvarchar(max)")]
+        TableDefinition = "[match] int, [group_name] nvarchar(4000), [group] int, [capture] int, [position] int, [length] int, [value] nvarchar(max)")]
     public static IEnumerable Regex_Matches(
         [SqlFacet(MaxSize = -1)] SqlString input, 
         SqlString pattern, 
@@ -65,8 +65,10 @@ public partial class UserDefinedFunctions
         if (input.IsNull)
             yield break;
 
+        Regex r = new Regex(pattern.Value, __ParseRegexOptions(options));
+
         int mNum = 0;
-        foreach (Match m in Regex.Matches(input.Value, pattern.Value, __ParseRegexOptions(options)))
+        foreach (Match m in r.Matches(input.Value))
         {
             mNum++;
 
@@ -74,6 +76,8 @@ public partial class UserDefinedFunctions
             foreach (Group g in m.Groups)
             {
                 gNum++;
+
+                string gName = r.GroupNameFromNumber(gNum);
 
                 int cNum = 0;
 
@@ -84,7 +88,9 @@ public partial class UserDefinedFunctions
                     yield return new
                         __MatchWrapper()
                         {
+                            
                             Match = mNum,
+                            GroupName = gName,
                             Group = gNum,
                             Capture = cNum,
                             Position = c.Index,
@@ -97,13 +103,14 @@ public partial class UserDefinedFunctions
     }
 
     public static void __Regex_MatchesFill(
-        object obj, out SqlInt32 match, out SqlInt32 group,
+        object obj, out SqlInt32 match, out SqlString groupName, out SqlInt32 group,
         out SqlInt32 capture, out SqlInt32 position, out SqlInt32 length, 
         [SqlFacet(MaxSize = -1)] out SqlString value)
     {
         var m = (__MatchWrapper)obj;
 
         match = m.Match;
+        groupName = m.GroupName;
         group = m.Group;
         capture = m.Capture;
         position = m.Position;
@@ -113,6 +120,32 @@ public partial class UserDefinedFunctions
 
     #endregion Обертка для Regex Matches
 
+    #region Обертка для Regex Match
+
+    [return: SqlFacet(MaxSize = -1)]
+    [SqlFunction(IsDeterministic = true, IsPrecise = true)]
+    public static SqlString Regex_Match(
+        [SqlFacet(MaxSize = -1)] SqlString input,
+        SqlString pattern,
+        SqlString options)
+    {
+        if (pattern.IsNull)
+            throw new ArgumentException("Parameter [pattern] can not be NULL");
+
+        if (input.IsNull)
+            return String.Empty;
+
+        return
+            Regex.Match
+            (
+                input.Value,
+                pattern.Value,
+                __ParseRegexOptions(options)
+            ).Value;
+    }
+
+    #endregion Обертка для Regex IsMatch
+    
     #region Обертка для Regex IsMatch
     
     [SqlFunction(IsDeterministic = true, IsPrecise = true)]
@@ -189,6 +222,7 @@ public partial class UserDefinedFunctions
     private class __MatchWrapper
     {
         public int Match { get; set; }
+        public string GroupName { get; set; }
         public int Group { get; set; }
         public int Capture { get; set; }
         public int Position { get; set; }
