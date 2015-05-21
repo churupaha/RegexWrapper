@@ -75,9 +75,9 @@ public partial class UserDefinedFunctions
             int gNum = 0;
             foreach (Group g in m.Groups)
             {
-                gNum++;
-
                 string gName = r.GroupNameFromNumber(gNum);
+                
+                gNum++;
 
                 int cNum = 0;
 
