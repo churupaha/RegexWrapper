@@ -70,20 +70,14 @@ public partial class UserDefinedFunctions
         int mNum = 0;
         foreach (Match m in r.Matches(input.Value))
         {
-            mNum++;
-
             int gNum = 0;
             foreach (Group g in m.Groups)
             {
                 string gName = r.GroupNameFromNumber(gNum);
                 
-                gNum++;
-
                 int cNum = 0;
-
                 foreach (Capture c in g.Captures)
                 {
-                    cNum++;
 
                     yield return new
                         __MatchWrapper()
@@ -97,8 +91,14 @@ public partial class UserDefinedFunctions
                             Length = c.Length,
                             Value = c.Value
                         };
+                
+                    cNum++;
                 }
+            
+                gNum++;
             }
+        
+            mNum++;
         }
     }
 
