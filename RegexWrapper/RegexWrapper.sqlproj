@@ -28,6 +28,7 @@
     <PermissionSet>UNSAFE</PermissionSet>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>RegexWrapper.pfx</AssemblyOriginatorKeyFile>
+    <DacVersion>2.0.0.0</DacVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -67,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RegexWrapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="SQL\Regex_IsMatch.sql" />
