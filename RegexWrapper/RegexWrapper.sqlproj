@@ -60,6 +60,7 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="SQL" />
+    <Folder Include="Snapshots" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RegexWrapper.cs" />
@@ -77,5 +78,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Snapshots\RegexWrapper_20150523_12-29-40.dacpac" />
   </ItemGroup>
 </Project>
