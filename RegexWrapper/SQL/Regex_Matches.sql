@@ -1,8 +1,7 @@
 ﻿create function [ext].[Regex_Matches]
 (
-	@input nvarchar (max), 
-	@pattern nvarchar (4000), 
-	@options nvarchar (4000)
+	@handle bigint,
+	@input nvarchar (max)
 )
 returns 
      table 
@@ -15,4 +14,4 @@ returns
         [length]        int                 null,
         [value]         nvarchar (max)      null
 	)
-as external name [RegexWrapper].[UserDefinedFunctions].[Regex_Matches]
+as external name [RegexWrapper].[__Regex].[Matches]

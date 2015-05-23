@@ -72,6 +72,8 @@
     <Build Include="SQL\Regex_Split.sql" />
     <Build Include="SQL\SchemaExt.sql" />
     <Build Include="SQL\Regex_Match.sql" />
+    <Build Include="SQL\Regex_Create.sql" />
+    <Build Include="SQL\Regex_Free.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data" />
@@ -81,5 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Snapshots\RegexWrapper_20150523_12-29-40.dacpac" />
+    <None Include="RegexWrapper.publish.xml" />
   </ItemGroup>
 </Project>

@@ -8,34 +8,29 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using Microsoft.SqlServer.Server;
+using System.Runtime.InteropServices;
+using System.Security.Permissions;
 
-public partial class UserDefinedFunctions
+public partial class __Regex
 {
-    #region Обертка для Regex Split
+    #region Обертка для Split
     
     [SqlFunction(
         IsDeterministic = true,
         IsPrecise = true,
         FillRowMethodName = "__Regex_SplitFill", 
         TableDefinition = "[part] nvarchar(max)")]
-    public static IEnumerable Regex_Split(
-        [SqlFacet(MaxSize = -1)] SqlString input,
-        SqlString pattern,
-        SqlString options)
+    public static IEnumerable Split(SqlInt64 handle, [SqlFacet(MaxSize = -1)] SqlString input)
     {
-        if (pattern.IsNull)
-            throw new ArgumentException("Parameter [pattern] can not be NULL");
-
+        if (handle.IsNull)
+            throw new ArgumentException("Invalid handle");
+        
         if (input.IsNull)
             return new string[] { };
+        
+        Regex r = (Regex)GCHandle.FromIntPtr(new IntPtr(handle.Value)).Target;
 
-        return 
-            (IEnumerable)Regex.Split
-            (
-                input.Value, 
-                pattern.Value,
-                __ParseRegexOptions(options)
-            );
+        return r.Split(input.Value);
     }
 
     public static void __Regex_SplitFill(
@@ -45,27 +40,24 @@ public partial class UserDefinedFunctions
         part = new SqlString((string)obj);
     }
 
-    #endregion Обертка для Regex Split
+    #endregion Обертка для Split
 
-    #region Обертка для Regex Matches
+    #region Обертка для Matches
 
     [SqlFunction(
         IsDeterministic = true,
         IsPrecise = true, 
         FillRowMethodName = "__Regex_MatchesFill",
         TableDefinition = "[match] int, [group_name] nvarchar(4000), [group] int, [capture] int, [position] int, [length] int, [value] nvarchar(max)")]
-    public static IEnumerable Regex_Matches(
-        [SqlFacet(MaxSize = -1)] SqlString input, 
-        SqlString pattern, 
-        SqlString options)
+    public static IEnumerable Matches(SqlInt64 handle, [SqlFacet(MaxSize = -1)] SqlString input)
     {
-        if (pattern.IsNull)
-            throw new ArgumentException("Parameter [pattern] can not be NULL");
-
+        if (handle.IsNull)
+            throw new ArgumentException("Invalid handle");
+        
         if (input.IsNull)
             yield break;
 
-        Regex r = new Regex(pattern.Value, __ParseRegexOptions(options));
+        Regex r = (Regex)GCHandle.FromIntPtr(new IntPtr(handle.Value)).Target;
 
         int mNum = 0;
         foreach (Match m in r.Matches(input.Value))
@@ -80,7 +72,7 @@ public partial class UserDefinedFunctions
                 {
 
                     yield return new
-                        __MatchWrapper()
+                        __Match()
                         {
                             
                             Match = mNum,
@@ -107,7 +99,7 @@ public partial class UserDefinedFunctions
         out SqlInt32 capture, out SqlInt32 position, out SqlInt32 length, 
         [SqlFacet(MaxSize = -1)] out SqlString value)
     {
-        var m = (__MatchWrapper)obj;
+        var m = (__Match)obj;
 
         match = m.Match;
         groupName = m.GroupName;
@@ -118,89 +110,101 @@ public partial class UserDefinedFunctions
         value = m.Value;
     }
 
-    #endregion Обертка для Regex Matches
+    #endregion Обертка для Matches
 
-    #region Обертка для Regex Match
+    #region Обертка для Match
 
     [return: SqlFacet(MaxSize = -1)]
     [SqlFunction(IsDeterministic = true, IsPrecise = true)]
-    public static SqlString Regex_Match(
-        [SqlFacet(MaxSize = -1)] SqlString input,
-        SqlString pattern,
-        SqlString options)
+    public static SqlString Match(SqlInt64 handle, [SqlFacet(MaxSize = -1)] SqlString input)
     {
-        if (pattern.IsNull)
-            throw new ArgumentException("Parameter [pattern] can not be NULL");
-
+        if (handle.IsNull)
+            throw new ArgumentException("Invalid handle");
+        
         if (input.IsNull)
             return String.Empty;
 
-        return
-            Regex.Match
-            (
-                input.Value,
-                pattern.Value,
-                __ParseRegexOptions(options)
-            ).Value;
+        Regex r = (Regex)GCHandle.FromIntPtr(new IntPtr(handle.Value)).Target;
+
+        return r.Match(input.Value).Value;
     }
 
-    #endregion Обертка для Regex IsMatch
+    #endregion Обертка для Match
     
-    #region Обертка для Regex IsMatch
+    #region Обертка для IsMatch
     
     [SqlFunction(IsDeterministic = true, IsPrecise = true)]
-    public static SqlBoolean Regex_IsMatch(
-        [SqlFacet(MaxSize = -1)] SqlString input, 
-        SqlString pattern, 
-        SqlString options)
+    public static SqlBoolean IsMatch(SqlInt64 handle, [SqlFacet(MaxSize = -1)] SqlString input)
     {
-        if (pattern.IsNull)
-            throw new ArgumentException("Parameter [pattern] can not be NULL");
-
+        if (handle.IsNull)
+            throw new ArgumentException("Invalid handle");
+        
         if (input.IsNull)
             return false;
 
-        return
-            Regex.IsMatch
-            (
-                input.Value, 
-                pattern.Value,
-                __ParseRegexOptions(options)
-            );
+        Regex r = (Regex)GCHandle.FromIntPtr(new IntPtr(handle.Value)).Target;
+
+        return r.IsMatch(input.Value);
     }
 
-    #endregion Обертка для Regex IsMatch
+    #endregion Обертка для IsMatch
 
-    #region Обертка для Regex Replace
+    #region Обертка для Replace
 
     [return: SqlFacet(MaxSize = -1)]
     [SqlFunction(IsDeterministic = true, IsPrecise = true)]
-    public static SqlString Regex_Replace(
+    public static SqlString Replace(
+        SqlInt64 handle,
         [SqlFacet(MaxSize = -1)] SqlString input, 
-        SqlString pattern,
-        [SqlFacet(MaxSize = -1)] SqlString replacement, 
-        SqlString options)
+        [SqlFacet(MaxSize = -1)] SqlString replacement)
     {
-        if (pattern.IsNull)
-            throw new ArgumentException("Parameter [pattern] can not be NULL");
-
+        if (handle.IsNull)
+            throw new ArgumentException("Invalid handle"); 
+        
         if (replacement.IsNull)
             throw new ArgumentException("Parameter [replacement] can not be NULL");
 
         if (input.IsNull)
             return new SqlString(null);
 
-        return
-            Regex.Replace
-            (
-                input.Value, 
-                pattern.Value, 
-                replacement.Value,
-                __ParseRegexOptions(options)
-            );
+        Regex r = (Regex)GCHandle.FromIntPtr(new IntPtr(handle.Value)).Target;
+
+        return r.Replace
+        (
+            input.Value, 
+            replacement.Value
+        );
     }
     
-    #endregion Обертка для Regex Replace
+    #endregion Обертка для Replace
+
+    #region Create
+
+    [SqlProcedure]
+    public static void Create(SqlString pattern, SqlString options, out SqlInt64 handle)
+    {
+        if (pattern.IsNull)
+            throw new ArgumentException("Parameter [pattern] can not be NULL");
+
+        Regex r = new Regex(pattern.Value, __ParseRegexOptions(options));
+
+        handle = GCHandle.ToIntPtr(GCHandle.Alloc(r, GCHandleType.Normal)).ToInt64();
+    }
+
+    #endregion Create
+
+    #region Free
+
+    [SqlProcedure]
+    public static void Free(SqlInt64 handle)
+    {
+        if (handle.IsNull)
+            throw new ArgumentException("Invalid handle");
+
+        GCHandle.FromIntPtr(new IntPtr(handle.Value)).Free();
+    }
+
+    #endregion Free
 
     #region Хелперы
 
@@ -219,7 +223,7 @@ public partial class UserDefinedFunctions
                     .Aggregate((a, n) => a | n);
     }
 
-    private class __MatchWrapper
+    private class __Match
     {
         public int Match { get; set; }
         public string GroupName { get; set; }

@@ -1,10 +1,9 @@
 ﻿create function [ext].[Regex_Replace]
 (
-	@input nvarchar (max), 
-	@pattern nvarchar (4000), 
-	@replacement nvarchar (max), 
-	@options nvarchar (4000)
+	@handle bigint,
+	@input nvarchar (max),
+	@replacement nvarchar(max)
 )
 returns nvarchar (max)
-as external name [RegexWrapper].[UserDefinedFunctions].[Regex_Replace]
+as external name [RegexWrapper].[__Regex].[Replace]
 
