@@ -27,8 +27,8 @@ public partial class __Regex
         
         if (input.IsNull)
             return new string[] { };
-        
-        Regex r = (Regex)GCHandle.FromIntPtr(new IntPtr(handle.Value)).Target;
+
+        Regex r = (Regex)RegexFromHandle(ref handle);
 
         return r.Split(input.Value);
     }
@@ -57,7 +57,7 @@ public partial class __Regex
         if (input.IsNull)
             yield break;
 
-        Regex r = (Regex)GCHandle.FromIntPtr(new IntPtr(handle.Value)).Target;
+        Regex r = (Regex)RegexFromHandle(ref handle);
 
         int mNum = 0;
         foreach (Match m in r.Matches(input.Value))
@@ -124,7 +124,7 @@ public partial class __Regex
         if (input.IsNull)
             return String.Empty;
 
-        Regex r = (Regex)GCHandle.FromIntPtr(new IntPtr(handle.Value)).Target;
+        Regex r = (Regex)RegexFromHandle(ref handle);
 
         return r.Match(input.Value).Value;
     }
@@ -142,7 +142,7 @@ public partial class __Regex
         if (input.IsNull)
             return false;
 
-        Regex r = (Regex)GCHandle.FromIntPtr(new IntPtr(handle.Value)).Target;
+        Regex r = (Regex)RegexFromHandle(ref handle);
 
         return r.IsMatch(input.Value);
     }
@@ -167,7 +167,7 @@ public partial class __Regex
         if (input.IsNull)
             return new SqlString(null);
 
-        Regex r = (Regex)GCHandle.FromIntPtr(new IntPtr(handle.Value)).Target;
+        Regex r = (Regex)RegexFromHandle(ref handle);
 
         return r.Replace
         (
@@ -201,7 +201,7 @@ public partial class __Regex
         if (handle.IsNull)
             throw new ArgumentException("Invalid handle");
 
-        GCHandle.FromIntPtr(new IntPtr(handle.Value)).Free();
+        GCHandleFromInt64(ref handle).Free();
     }
 
     #endregion Free
@@ -232,6 +232,16 @@ public partial class __Regex
         public int Position { get; set; }
         public int Length { get; set; }
         public string Value { get; set; }
+    }
+
+    private static GCHandle GCHandleFromInt64(ref SqlInt64 handle)
+    {
+        return GCHandle.FromIntPtr(new IntPtr(handle.Value));
+    }
+
+    private static Regex RegexFromHandle(ref SqlInt64 handle)
+    {
+        return (Regex)GCHandleFromInt64(ref handle).Target;
     }
 
     #endregion Хелперы
