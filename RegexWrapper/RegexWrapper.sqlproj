@@ -81,6 +81,11 @@
     <Build Include="SQL\regex\IsMatch.sql" />
     <None Include="Server\Permissions.sql" />
     <Build Include="SQL\SchemaExt.sql" />
+    <Build Include="SQL\ext\Regex_IsMatch.sql" />
+    <Build Include="SQL\ext\Regex_Match.sql" />
+    <Build Include="SQL\ext\Regex_Matches.sql" />
+    <Build Include="SQL\ext\Regex_Replace.sql" />
+    <Build Include="SQL\ext\Regex_Split.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data" />
