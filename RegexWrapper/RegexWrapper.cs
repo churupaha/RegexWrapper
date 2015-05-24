@@ -178,10 +178,10 @@ public partial class __Regex
     
     #endregion Обертка для Replace
 
-    #region Create
+    #region Alloc
 
     [SqlProcedure]
-    public static void Create(SqlString pattern, SqlString options, out SqlInt64 handle)
+    public static void Alloc(SqlString pattern, SqlString options, out SqlInt64 handle)
     {
         if (pattern.IsNull)
             throw new ArgumentException("Parameter [pattern] can not be NULL");
@@ -191,7 +191,7 @@ public partial class __Regex
         handle = GCHandle.ToIntPtr(GCHandle.Alloc(r, GCHandleType.Normal)).ToInt64();
     }
 
-    #endregion Create
+    #endregion Alloc
 
     #region Free
 

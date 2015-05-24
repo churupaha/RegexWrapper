@@ -13,7 +13,7 @@
     <RootPath>
     </RootPath>
     <RootNamespace>RegexWrapper</RootNamespace>
-    <AssemblyName>RegexWrapper</AssemblyName>
+    <AssemblyName>RegexWrapper_v2</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -65,20 +65,21 @@
     <Folder Include="Properties" />
     <Folder Include="SQL" />
     <Folder Include="Snapshots" />
+    <Folder Include="SQL\regex" />
+    <Folder Include="SQL\ext" />
+    <Folder Include="Server" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RegexWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="SQL\Regex_IsMatch.sql" />
-    <Build Include="SQL\Regex_Matches.sql" />
-    <Build Include="SQL\Regex_Replace.sql" />
-    <Build Include="SQL\Regex_Split.sql" />
-    <Build Include="SQL\SchemaExt.sql" />
-    <Build Include="SQL\Regex_Match.sql" />
-    <Build Include="SQL\Regex_Create.sql" />
-    <Build Include="SQL\Regex_Free.sql" />
+    <Build Include="SQL\SchemaRegex.sql" />
+    <Build Include="SQL\regex\Split.sql" />
+    <Build Include="SQL\regex\Alloc.sql" />
+    <Build Include="SQL\regex\Free.sql" />
+    <Build Include="SQL\regex\IsMatch.sql" />
+    <None Include="Server\Permissions.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data" />
@@ -90,5 +91,10 @@
     <None Include="Snapshots\RegexWrapper_20150523_12-29-40.dacpac" />
     <None Include="RegexWrapper.publish.xml" />
     <None Include="RegexWrapper.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="SQL\regex\Match.sql" />
+    <Build Include="SQL\regex\Matches.sql" />
+    <Build Include="SQL\regex\Replace.sql" />
   </ItemGroup>
 </Project>

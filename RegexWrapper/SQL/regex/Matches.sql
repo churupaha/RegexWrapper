@@ -1,4 +1,4 @@
-﻿create function [ext].[Regex_Matches]
+﻿create function [regex].[Matches]
 (
 	@handle bigint,
 	@input nvarchar (max)
@@ -14,4 +14,4 @@ returns
         [length]        int                 null,
         [value]         nvarchar (max)      null
 	)
-as external name [RegexWrapper].[__Regex].[Matches]
+as external name [RegexWrapper_v2].[__Regex].[Matches]
