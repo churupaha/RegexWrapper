@@ -80,6 +80,7 @@
     <Build Include="SQL\regex\Free.sql" />
     <Build Include="SQL\regex\IsMatch.sql" />
     <None Include="Server\Permissions.sql" />
+    <Build Include="SQL\SchemaExt.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data" />

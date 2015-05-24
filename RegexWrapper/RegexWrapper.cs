@@ -245,5 +245,4 @@ public partial class __Regex
     }
 
     #endregion Хелперы
-
 }
