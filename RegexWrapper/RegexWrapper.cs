@@ -65,16 +65,12 @@ public partial class UserDefinedFunctions
         if (input.IsNull)
             yield break;
 
-        Regex r = new Regex(pattern.Value, __ParseRegexOptions(options));
-
         int mNum = 0;
-        foreach (Match m in r.Matches(input.Value))
+        foreach (Match m in Regex.Matches(input.Value, pattern.Value, __ParseRegexOptions(options)))
         {
             int gNum = 0;
             foreach (Group g in m.Groups)
             {
-                string gName = r.GroupNameFromNumber(gNum);
-                
                 int cNum = 0;
                 foreach (Capture c in g.Captures)
                 {
@@ -84,7 +80,6 @@ public partial class UserDefinedFunctions
                         {
                             
                             Match = mNum,
-                            GroupName = gName,
                             Group = gNum,
                             Capture = cNum,
                             Position = c.Index,
