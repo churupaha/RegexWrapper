@@ -4,7 +4,7 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseName>db1</TargetDatabaseName>
     <DeployScriptFileName>RegexWrapper.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=localhost\no;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <TargetConnectionString>Data Source=localhost\sqlsrv2014;Integrated Security=True;Pooling=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
   </PropertyGroup>
 </Project>
