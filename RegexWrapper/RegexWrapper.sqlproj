@@ -26,8 +26,8 @@
     <GenerateSqlClrDdl>False</GenerateSqlClrDdl>
     <TargetFrameworkProfile />
     <PermissionSet>UNSAFE</PermissionSet>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>RegexWrapper.pfx</AssemblyOriginatorKeyFile>
+    <SignAssembly>False</SignAssembly>
+    <AssemblyOriginatorKeyFile>RegexWrapper.snk</AssemblyOriginatorKeyFile>
     <DacVersion>2.0.0.0</DacVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -96,8 +96,6 @@
   <ItemGroup>
     <None Include="Snapshots\RegexWrapper_20150523_12-29-40.dacpac" />
     <None Include="RegexWrapper.publish.xml" />
-    <None Include="RegexWrapper.pfx" />
-    <None Include="RegexWrapper.snk" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="SQL\regex\Match.sql" />
