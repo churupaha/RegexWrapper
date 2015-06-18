@@ -67,7 +67,6 @@
     <Folder Include="Snapshots" />
     <Folder Include="SQL\regex" />
     <Folder Include="SQL\ext" />
-    <Folder Include="Server" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RegexWrapper.cs" />
@@ -79,7 +78,6 @@
     <Build Include="SQL\regex\Alloc.sql" />
     <Build Include="SQL\regex\Free.sql" />
     <Build Include="SQL\regex\IsMatch.sql" />
-    <None Include="Server\Permissions.sql" />
     <Build Include="SQL\SchemaExt.sql" />
     <Build Include="SQL\ext\Regex_IsMatch.sql" />
     <Build Include="SQL\ext\Regex_Match.sql" />
